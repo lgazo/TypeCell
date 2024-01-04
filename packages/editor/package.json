@@ -2,6 +2,8 @@
   "name": "@typecell-org/editor",
   "version": "0.0.3",
   "private": true,
+  "main": "dist/typecell-editor.umd.js",
+  "module": "dist/typecell-editor.umd.js",
   "dependencies": {
     "react-confetti-explosion": "^2.1.2",
     "@hocuspocus/provider": "^2.4.0",

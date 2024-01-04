@@ -72,3 +72,10 @@ export function parseIdentifier(identifier: string) {
 //     return "invalid-identifier" as "invalid-identifier";
 //   }
 // }
+
+export * from "./FileIdentifier";
+export * from "./GithubIdentifier";
+export * from "./HttpsIdentifier";
+export * from "./Identifier";
+export * from "./MatrixIdentifier";
+export * from "./TypeCellIdentifier";

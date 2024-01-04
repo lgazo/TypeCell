@@ -66,7 +66,13 @@ export default defineConfig((conf) => ({
     },
   },
   build: {
+    lib: {
+      entry: path.resolve(__dirname, "src/index.ts"),
+      name: "typecell-editor",
+      fileName: "typecell-editor",
+    },
     rollupOptions: {
+      external: ["react", "react-dom"],
       output: {
         chunkFileNames: (chunkInfo) => {
           if (chunkInfo.name.includes("startConnectionTimeout")) {
@@ -82,7 +88,7 @@ export default defineConfig((conf) => ({
       // used during production bundling
       plugins: [nodePolyfills()],
     },
-    sourcemap: true,
+    sourcemap: "inline",
   },
   test: {
     exclude: [

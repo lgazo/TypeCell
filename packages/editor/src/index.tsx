@@ -19,8 +19,13 @@ async function init() {
   // TODO: separate code from iframe and parent window?
 
   if (window.location.search.includes("frame")) {
+    console.log("Heading to Frame");
     await import("./index.iframe");
+  } else if (window.location.search.includes("nextcloud")) {
+    console.log("Heading to NextCloud");
+    await import("./index.nextcloud");
   } else {
+    console.log("Heading to Host");
     await import("./index.host");
   }
 }
