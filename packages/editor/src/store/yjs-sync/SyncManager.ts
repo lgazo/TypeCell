@@ -50,7 +50,7 @@ export class SyncManager extends lifecycle.Disposable {
       if (remoteStatus === "loaded") {
         // TODO: fix / diagnose when this occurs
         console.warn(
-          "should not be possible, doc status 'loading', but remote 'loaded'"
+          "should not be possible, doc status 'loading', but remote 'loaded'",
         );
         return "loading";
       }
@@ -69,7 +69,7 @@ export class SyncManager extends lifecycle.Disposable {
   constructor(
     public readonly identifier: Identifier,
     // private readonly localDoc: LocalDoc | undefined,
-    private readonly sessionStore: SessionStore
+    private readonly sessionStore: SessionStore,
   ) {
     super();
     // if (localDoc) {
@@ -102,7 +102,7 @@ export class SyncManager extends lifecycle.Disposable {
         if (unsyncedChanges === 0) {
           if (!this.sessionStore.documentCoordinator) {
             throw new Error(
-              "no documentCoordinator. logged out while syncing?"
+              "no documentCoordinator. logged out while syncing?",
             );
           }
           if (this.state.status === "loading") {
@@ -154,13 +154,17 @@ export class SyncManager extends lifecycle.Disposable {
       throw new Error("not implemented anymore");
       // return new MatrixRemote(this.ydoc, identifier);
     } else if (identifier instanceof TypeCellIdentifier) {
-      if (!(this.sessionStore instanceof SupabaseSessionStore)) {
-        // TODO: should this be possible?
-        throw new Error(
-          "can't load from supabase without supabasesessionstore"
-        );
-      }
-      return new TypeCellRemote(this.ydoc, identifier, this.sessionStore);
+      // if (!(this.sessionStore instanceof SupabaseSessionStore)) {
+      //   // TODO: should this be possible?
+      //   throw new Error(
+      //     "can't load from supabase without supabasesessionstore"
+      //   );
+      // }
+      return new TypeCellRemote(
+        this.ydoc,
+        identifier,
+        this.sessionStore as SupabaseSessionStore,
+      );
     } else {
       throw new Error("unsupported identifier");
     }
@@ -188,7 +192,7 @@ export class SyncManager extends lifecycle.Disposable {
 
     if (!this.sessionStore.documentCoordinator) {
       throw new Error(
-        "no documentCoordinator. logged out while loadFromRemote?"
+        "no documentCoordinator. logged out while loadFromRemote?",
       );
     }
 
@@ -199,7 +203,7 @@ export class SyncManager extends lifecycle.Disposable {
     const localDoc =
       this.sessionStore.documentCoordinator.createDocumentFromRemote(
         this.identifier,
-        this.ydoc
+        this.ydoc,
       );
 
     runInAction(() => {
@@ -229,7 +233,7 @@ export class SyncManager extends lifecycle.Disposable {
 
     const doc = await this.sessionStore.documentCoordinator.createDocument(
       this.identifier,
-      this.ydoc
+      this.ydoc,
     );
 
     if (this.disposed) {
@@ -258,13 +262,13 @@ export class SyncManager extends lifecycle.Disposable {
     // (works with the rest of this workaround below)
     if (this.identifier instanceof HttpsIdentifier) {
       await this.sessionStore.documentCoordinator.clearIfNotChanged(
-        this.identifier
+        this.identifier,
       );
     }
 
     const doc = this.sessionStore.documentCoordinator.loadDocument(
       this.identifier,
-      this.ydoc
+      this.ydoc,
     );
 
     if (doc === "not-found") {
@@ -323,7 +327,7 @@ export class SyncManager extends lifecycle.Disposable {
   public static create(
     identifier: Identifier,
     sessionStore: SessionStore,
-    forkSource?: Y.Doc
+    forkSource?: Y.Doc,
   ) {
     // create locally
     // start syncing:

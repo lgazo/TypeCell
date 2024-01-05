@@ -3,17 +3,18 @@ import { useLocation } from "react-router-dom";
 import { tryPathToIdentifiers } from "../../identifiers/paths/identifierPathHelpers";
 import { SessionStore } from "../../store/local/SessionStore";
 import DocumentView from "../documentRenderers/DocumentView";
-import { SupabaseSessionStore } from "../supabase-auth/SupabaseSessionStore";
+// import { SupabaseSessionStore } from "../supabase-auth/SupabaseSessionStore";
 import { RouteContext } from "./RouteContext";
 import { URLUpdater } from "./URLUpdater";
-import { OwnerAliasRoute } from "./ownerAlias";
+// import { OwnerAliasRoute } from "./ownerAlias";
+import { OwnerAliasRoute } from "./nextCloudOwnerAlias";
 
 export const DocumentRoute = observer(
   (props: { sessionStore: SessionStore }) => {
     const { sessionStore } = props;
-    if (!(sessionStore instanceof SupabaseSessionStore)) {
-      throw new Error("No session store");
-    }
+    // if (!(sessionStore instanceof SupabaseSessionStore)) {
+    //   throw new Error("No session store");
+    // }
 
     const location = useLocation();
 
@@ -22,7 +23,7 @@ export const DocumentRoute = observer(
     }
 
     const [owner, workspace, ...documentParts] = decodeURIComponent(
-      location.pathname
+      location.pathname,
     )
       .substring(1)
       .split("/");
@@ -30,7 +31,7 @@ export const DocumentRoute = observer(
 
     if (!owner || owner.length < 2 || !owner.startsWith("@")) {
       const identifiers = tryPathToIdentifiers(
-        decodeURIComponent(location.pathname).substring(1)
+        decodeURIComponent(location.pathname).substring(1),
       );
       if (identifiers !== "invalid-identifier") {
         const [id, ...subs] = identifiers;
@@ -61,5 +62,5 @@ export const DocumentRoute = observer(
         sessionStore={sessionStore}
       />
     );
-  }
+  },
 );

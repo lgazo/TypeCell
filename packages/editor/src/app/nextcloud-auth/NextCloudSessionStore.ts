@@ -18,7 +18,7 @@ const colors = [
 ];
 
 export class NextCloudSessionStore extends SessionStore {
-  public storePrefix = "tc";
+  public storePrefix = "nc";
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   public userColor = arrays.getRandomElement(colors)!;
@@ -80,24 +80,27 @@ export class NextCloudSessionStore extends SessionStore {
       // };
       this.userId = "NC Test";
       this.user = {
-        type: "user",
-        userId: "nc_test",
-        fullUserId: "nc_test",
-        profileId: "nc_test_profile_id",
-        isSignUp: false,
+        type: "guest-user",
+        // userId: "nc_test",
+        // fullUserId: "nc_test",
+        // profileId: "nc_test_profile_id",
+        // isSignUp: false,
         supabase: {},
       };
     });
   }
 
   public get isLoggedIn(): boolean {
-    throw new Error("Method not implemented.");
+    // return typeof this.user !== "string" && this.user.type === "user";
+    return true;
   }
   public get isLoaded(): boolean {
-    throw new Error("Method not implemented.");
+    return this.user !== "loading" || typeof this.userId === "string";
   }
   public get loggedInUserId(): string | undefined {
-    throw new Error("Method not implemented.");
+    return typeof this.user !== "string" && this.user.type === "user"
+      ? this.user.userId
+      : undefined;
   }
   public logout = async () => {
     if (!this.isLoggedIn) {
